@@ -1,0 +1,62 @@
+﻿@page "/Contact"
+@using BlazorServerApp 
+@using BlazorServerApp.Data
+
+<h3>Contactez-nous</h3>
+
+<p>Nous serions ravide recevoir vos commentaires et vos questions.<br> Remplissez le formulaire ci-dessous pour nous contacter.</p>
+
+
+
+    <form>
+        <div class="form-group ">
+            <label for="nom">Nom :</label>
+            <input type="text" class="form-control" id="Nom" @bind="newName" />
+        </div>
+        <div class="form-group">
+            <label for="email">Email :</label>
+            <input type="text" class="form-control" id="email" @bind="newEmail" />
+        </div>
+        <div class="form-group">
+            <label for="message">Message :</label>
+            <textarea type="text" class="form-control" id="mesage" @bind="newMessage"></textarea>
+        </div>
+        <button class="btn btn-primary mt-2" @onclick="EnvoyerForm">Envoyer</button>
+    </form>
+
+
+@code {
+
+    
+
+    string newName = "";
+    string newEmail = "";
+    string newMessage = "";
+
+    
+    [Inject]
+    private BlazorServerApp.Models.MessageContext _dbContext { get; set; }
+
+
+    async Task EnvoyerForm()
+    {
+        
+        var contact = new BlazorServerApp.Models.Message
+        
+        {
+            Nom = newName,
+            Email = newEmail,
+            Message1 = newMessage
+        };
+
+      
+        _dbContext.Messages.Add(contact);
+        await _dbContext.SaveChangesAsync();
+
+
+
+        newName = "";
+        newEmail = "";
+        newMessage = "";
+    }
+}

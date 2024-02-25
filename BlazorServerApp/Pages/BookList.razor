@@ -1,0 +1,59 @@
+﻿@page "/Book-list"
+
+<h3>Liste des livres</h3>
+
+<ul class="list-group bg-light">
+    @foreach (var book in books)
+    {
+        <li class="list-group-item backgroudColor">
+            <div class="row justify-content-between">
+                <div class="col-md-8">
+                    <p>@book.Title - @book.Autor</p>
+                </div>
+                <div class="col-md-4">
+                    <button class="btn btn-danger float-right" @onclick="() => DeletedBook(book)">Supprimer</button>
+                </div>
+            </div>
+        </li>
+    }
+</ul>
+
+<div class="container mt-4">
+    <h4>Ajouter un livre</h4>
+    <div class="form-group ">
+        <label for="title">Titre :</label>
+        <input type="text" class="form-control" id="title" @bind="newBook" />
+    </div>
+    <div class="form-group">
+        <label for="autor">Auteur :</label>
+        <input type="text" class="form-control" id="autor" @bind="newAutor" />
+    </div>
+    <button class="btn btn-primary mt-2" @onclick="AddBook">Ajouter Livre</button>
+</div>
+
+@code {
+    private string newBook = "";
+    private string newAutor = "";
+    private List<Book> books = new List<Book>();
+
+    private void AddBook()
+    {
+        if (!string.IsNullOrWhiteSpace(newBook) && !string.IsNullOrWhiteSpace(newAutor))
+        {
+            Book list = new Book
+                {
+                    Title = newBook,
+                    Autor = newAutor
+
+                };
+
+
+            books.Add(list);
+        }
+    }
+
+    private void DeletedBook(Book task)
+    {
+        books.Remove(task);
+    }
+}
